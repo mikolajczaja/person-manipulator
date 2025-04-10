@@ -1,0 +1,16 @@
+services:
+  redis-db:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  app:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+      - "7777:7777"
+    environment:
+      REDIS_HOSTNAME: redis-db
+      TASK_SLEEP_INTERVAL: 5000
+    links:
+      - redis-db
