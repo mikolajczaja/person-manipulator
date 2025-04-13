@@ -65,13 +65,6 @@ public class DefaultDifferenceClassificationTool implements DifferenceClassifica
     }
 
     BigDecimal countUniqueChars(String oldValue, String newValue) {
-
-//        List<Character> listToPopFrom = oldValue.chars().mapToObj(c -> (char) c).collect(Collectors.toList());
-//
-//        for (Character c : newValue.toCharArray()) {
-//            listToPopFrom.remove(c); //excerpt from doc: "Removes the first occurrence of the specified element from this list"
-//        }
-
         return BigDecimal.valueOf(CollectionUtils.subtract(
                 oldValue.chars().mapToObj(c -> (char) c).toList(),
                 newValue.chars().mapToObj(c -> (char) c).toList()).size());
