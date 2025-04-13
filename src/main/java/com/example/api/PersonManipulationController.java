@@ -42,10 +42,10 @@ public class PersonManipulationController {
     }
 
     @PostMapping
-    public UpsertResponse createPerson(@Valid @RequestBody UpsertRequest request) {
+    public ResponseEntity<UpsertResponse> createPerson(@Valid @RequestBody UpsertRequest request) {
         Person saved = personRepository.save(request.toPerson());
         Long taskNumber = personDataProcessingService.processComparisonForCreatedPerson(saved.toPersonComparisonData());
-        return new UpsertResponse(saved, taskNumber);
+        return ResponseEntity.ok(new UpsertResponse(saved, taskNumber));
     }
 
     @PutMapping("/{id}")
@@ -76,19 +76,19 @@ public class PersonManipulationController {
     }
 
     @DeleteMapping("/{id}")
-    public DeleteResponse deletePerson(@PathVariable Long id) throws PersonNotFoundException {
+    public ResponseEntity<DeleteResponse> deletePerson(@PathVariable Long id) {
         Person oldPerson;
 
         synchronized (this) { //to avoid situations where the Person was modified after findById (without locking fun 😅)
             Optional<Person> personOptional = personRepository.findById(id);
             if (personOptional.isEmpty()) {
-                throw new PersonNotFoundException();
+                return ResponseEntity.notFound().build();
             }
             oldPerson = personOptional.get();
             personRepository.delete(oldPerson);
         }
         Long taskNumber = personDataProcessingService.processComparisonForDeletedPerson(oldPerson.toPersonComparisonData());
-        return new DeleteResponse(id, taskNumber);
+        return ResponseEntity.ok(new DeleteResponse(id, taskNumber));
     }
 
     @GetMapping
