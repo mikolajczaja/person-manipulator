@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDoc
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.convention.TestBean;
 
 import static io.restassured.RestAssured.given;
@@ -26,9 +26,9 @@ import static org.springframework.restdocs.restassured.RestAssuredRestDocumentat
 /**
  * mocked repos, disabled caches
  */
+@ActiveProfiles("test")
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @AutoConfigureRestDocs
-@TestPropertySource(properties = {"spring.cache.type=NONE"})
 class ApiTests {
 
     @LocalServerPort
