@@ -1,0 +1,233 @@
+openapi: "3.1.0"
+info:
+  title: "person_manipulator API"
+  description: "person_manipulator API"
+  version: "1.0.0"
+servers:
+  - url: "https://person_manipulator"
+paths:
+  /api/v1/people/{id}:
+    put:
+      summary: "PUT api/v1/people/{id}"
+      operationId: "updatePerson"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UpsertResponse"
+    delete:
+      summary: "DELETE api/v1/people/{id}"
+      operationId: "deletePerson"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/DeleteResponse"
+    get:
+      summary: "GET api/v1/people/{id}"
+      operationId: "getPersonById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Person"
+  /api/v1/people:
+    post:
+      summary: "POST api/v1/people"
+      operationId: "createPerson"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpsertRequest"
+        required: true
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/UpsertResponse"
+    get:
+      summary: "GET api/v1/people"
+      operationId: "getAllPeople"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Person"
+  /api/v1/tasks/{id}:
+    get:
+      summary: "GET api/v1/tasks/{id}"
+      operationId: "getTaskById"
+      parameters:
+        - name: "id"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+            format: "int64"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Task"
+  /api/v1/tasks:
+    get:
+      summary: "GET api/v1/tasks"
+      operationId: "getAllTasks"
+      responses:
+        "200":
+          description: "OK"
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Task"
+components:
+  schemas:
+    UpsertRequest:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        surname:
+          type: "string"
+        birthdate:
+          type: "string"
+        company:
+          type: "string"
+    Person:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        name:
+          type: "string"
+        surname:
+          type: "string"
+        birthdate:
+          type: "string"
+        company:
+          type: "string"
+    UpsertResponse:
+      type: "object"
+      properties:
+        person:
+          $ref: "#/components/schemas/Person"
+        taskNumber:
+          type: "integer"
+          format: "int64"
+    DeleteResponse:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        taskNumber:
+          type: "integer"
+          format: "int64"
+    PersonComparisonData:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        surname:
+          type: "string"
+        birthdate:
+          type: "string"
+        company:
+          type: "string"
+    Task:
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          format: "int64"
+        percentDone:
+          type: "integer"
+          format: "int32"
+        status:
+          type: "string"
+          enum:
+            - "PENDING"
+            - "RUNNING"
+            - "FINISHED"
+            - "ABORTED"
+        nameClassification:
+          type: "string"
+          enum:
+            - "ADDED"
+            - "LOW"
+            - "MEDIUM"
+            - "HIGH"
+            - "DELETED"
+            - "NOT_CALCULATED_YET"
+        surnameClassification:
+          type: "string"
+          enum:
+            - "ADDED"
+            - "LOW"
+            - "MEDIUM"
+            - "HIGH"
+            - "DELETED"
+            - "NOT_CALCULATED_YET"
+        birthdateClassification:
+          type: "string"
+          enum:
+            - "ADDED"
+            - "LOW"
+            - "MEDIUM"
+            - "HIGH"
+            - "DELETED"
+            - "NOT_CALCULATED_YET"
+        companyClassification:
+          type: "string"
+          enum:
+            - "ADDED"
+            - "LOW"
+            - "MEDIUM"
+            - "HIGH"
+            - "DELETED"
+            - "NOT_CALCULATED_YET"
+        oldData:
+          $ref: "#/components/schemas/PersonComparisonData"
+        newData:
+          $ref: "#/components/schemas/PersonComparisonData"
