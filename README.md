@@ -17,3 +17,11 @@ result.
 
 
 running:
+ - mvn clean install
+ - (re)build Dockerfile if necessary
+ - run docker compose
+   (btw, sleep interval that make tasks run longer can be set with env variable TASK_SLEEP_INTERVAL in docker-compose.yml or application.properties)
+
+ - alternatively running in IDE *should* trigger compose anyway (spring-boot-docker-compose magic)
+ - also if needed - redis hostname can be set with env variable REDIS_HOSTNAME in docker-compose.yml or application.properties
+ - remote debugging available at port 7777
