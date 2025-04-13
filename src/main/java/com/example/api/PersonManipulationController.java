@@ -1,6 +1,5 @@
 package com.example.api;
 
-import com.example.exception.PersonNotFoundException;
 import com.example.model.Person;
 import com.example.model.PersonComparisonData;
 import com.example.model.Task;
